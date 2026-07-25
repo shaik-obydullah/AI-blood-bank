@@ -1,0 +1,95 @@
+services:
+  blood_bank_laravel:
+    build:
+      context: ./src
+      dockerfile: ./Dockerfile
+    container_name: blood_bank_laravel
+    ports:
+      - "8005:8000"
+    volumes:
+      - ./src:/var/www/html
+      - vendor_cache:/var/www/html/vendor
+      - node_cache:/var/www/html/node_modules
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=mysql
+      - DB_HOST=blood_bank_mysql
+      - DB_PORT=3306
+      - DB_DATABASE=blood_bank_db
+      - DB_USERNAME=blood_bank_user
+      - DB_PASSWORD=blood_bank_secret
+      - OLLAMA_URL=http://blood_bank_ollama:11434/api
+      - OLLAMA_API_KEY=
+    depends_on:
+      blood_bank_mysql:
+        condition: service_healthy
+      blood_bank_ollama:
+        condition: service_started
+    networks:
+      - blood_bank_network
+    restart: "no"
+
+  blood_bank_mysql:
+    image: mysql:8.0
+    container_name: blood_bank_mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=blood_bank_root_secret
+      - MYSQL_DATABASE=blood_bank_db
+      - MYSQL_USER=blood_bank_user
+      - MYSQL_PASSWORD=blood_bank_secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pblood_bank_root_secret"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - blood_bank_network
+    restart: "no"
+
+  blood_bank_phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: blood_bank_phpmyadmin
+    ports:
+      - "8006:80"
+    environment:
+      - PMA_HOST=blood_bank_mysql
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=blood_bank_root_secret
+      - UPLOAD_LIMIT=100M
+    depends_on:
+      blood_bank_mysql:
+        condition: service_healthy
+    networks:
+      - blood_bank_network
+    restart: "no"
+
+  blood_bank_ollama:
+    image: ollama/ollama:latest
+    container_name: blood_bank_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    networks:
+      - blood_bank_network
+    restart: "no"
+
+volumes:
+  mysql_data:
+  ollama_data:
+  vendor_cache:
+  node_cache:
+
+networks:
+  blood_bank_network:
+    driver: bridge
