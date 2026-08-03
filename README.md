@@ -40,27 +40,27 @@ A robust Blood Bank portal powered by **Laravel 13**, designed to simplify life-
 
 ### Website
 
-![Website Homepage](src/public/screenshots/Website.png)
+![Website Homepage](screenshots/Website.png)
 
 ### Admin Dashboard
 
-![Admin Dashboard](src/public/screenshots/Admin-Dashboard.png)
+![Admin Dashboard](screenshots/Admin-Dashboard.png)
 
 ### Blood Inventory
 
-![Blood Inventory](src/public/screenshots/Blood-Bank-Inventory.png)
+![Blood Inventory](screenshots/Blood-Bank-Inventory.png)
 
 ### Donor Dashboard
 
-![Donor Dashboard](src/public/screenshots/Dono-Dashboard.png)
+![Donor Dashboard](screenshots/Dono-Dashboard.png)
 
 ### Donor Registration
 
-![Donor Registration](src/public/screenshots/Donor-Registration.png)
+![Donor Registration](screenshots/Donor-Registration.png)
 
 ### AI Chat Assistant
 
-![AI Chat Assistant](src/public/screenshots/AI_Chat.png)
+![AI Chat Assistant](screenshots/AI_Chat.png)
 
 ---
 
