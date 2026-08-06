@@ -2,7 +2,7 @@ services:
   blood_bank_laravel:
     build:
       context: ./src
-      dockerfile: ./Dockerfile
+      dockerfile: ../Dockerfile
     container_name: blood_bank_laravel
     ports:
       - "8005:8000"
@@ -34,7 +34,7 @@ services:
     image: mysql:8.0
     container_name: blood_bank_mysql
     ports:
-      - "3307:3306"
+      - "3309:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=blood_bank_root_secret
       - MYSQL_DATABASE=blood_bank_db
@@ -72,8 +72,6 @@ services:
   blood_bank_ollama:
     image: ollama/ollama:latest
     container_name: blood_bank_ollama
-    ports:
-      - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
     deploy:
